@@ -1,0 +1,24 @@
+{
+  "$schema": "https://raw.githubusercontent.com/evilmartians/lefthook/master/schema.json",
+  "min_version": "2.1.0",
+  "pre-commit": {
+    "parallel": true,
+    "skip": ["merge", "rebase"],
+    "jobs": [
+      {
+        "name": "biome",
+        "glob": "*.{js,jsx,mjs,cjs,ts,tsx,mts,cts,json,jsonc,css,html}",
+        "run": "pnpm biome check --write --no-errors-on-unmatched {staged_files}",
+        "stage_fixed": true
+      }
+    ]
+  },
+  "pre-push": {
+    "jobs": [
+      {
+        "name": "biome-ci",
+        "run": "pnpm lint:ci"
+      }
+    ]
+  }
+}
