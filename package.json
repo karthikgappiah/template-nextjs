@@ -2,7 +2,8 @@
   "name": "template-biomejs",
   "version": "0.0.0",
   "scripts": {
-    "lint": "biome check --write"
+    "lint": "biome check --write",
+    "lint:ci": "biome ci ."
   },
   "license": "UNLICENSED",
   "devEngines": {
