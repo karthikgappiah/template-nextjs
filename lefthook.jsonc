@@ -14,10 +14,15 @@
     ]
   },
   "pre-push": {
+    "parallel": true,
     "jobs": [
       {
         "name": "biome-ci",
         "run": "pnpm lint:ci"
+      },
+      {
+        "name": "typecheck",
+        "run": "pnpm typecheck"
       }
     ]
   }

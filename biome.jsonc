@@ -20,7 +20,8 @@
     "domains": {
       "project": "recommended",
       "react": "recommended",
-      "next": "recommended"
+      "next": "recommended",
+      "types": "recommended"
     }
   },
   "javascript": {
