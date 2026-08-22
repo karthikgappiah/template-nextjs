@@ -18,7 +18,9 @@
       "preset": "recommended"
     },
     "domains": {
-      "project": "recommended"
+      "project": "recommended",
+      "react": "recommended",
+      "next": "recommended"
     }
   },
   "javascript": {

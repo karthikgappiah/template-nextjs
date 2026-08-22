@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "lint": "biome check --write",
-    "lint:ci": "biome ci ."
+    "lint:ci": "biome ci .",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "license": "UNLICENSED",
   "devEngines": {
@@ -17,5 +20,10 @@
   "devDependencies": {
     "@biomejs/biome": "2.5.8",
     "lefthook": "^2.1.10"
+  },
+  "dependencies": {
+    "next": "^16.3.2",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   }
 }

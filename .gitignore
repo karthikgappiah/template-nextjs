@@ -2,3 +2,4 @@
 # PATH: /.gitignore
 
 node_modules/
+.next/
