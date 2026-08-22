@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import "@/src/styles/app.css";
 
 type RootLayoutProps = {
   children: ReactNode;
@@ -7,7 +8,7 @@ type RootLayoutProps = {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="flex min-h-dvh flex-col">{children}</body>
     </html>
   );
 }

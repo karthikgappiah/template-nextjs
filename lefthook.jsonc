@@ -21,8 +21,21 @@
         "run": "pnpm lint:ci"
       },
       {
-        "name": "typecheck",
-        "run": "pnpm typecheck"
+        // `next typegen` and `next build` both write `.next/`, so these run
+        // sequentially within the group rather than racing each other.
+        "name": "next",
+        "group": {
+          "jobs": [
+            {
+              "name": "typecheck",
+              "run": "pnpm typecheck"
+            },
+            {
+              "name": "build",
+              "run": "pnpm build"
+            }
+          ]
+        }
       }
     ]
   }

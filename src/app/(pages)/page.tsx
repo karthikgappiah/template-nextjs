@@ -1,3 +1,7 @@
 export default function LandingPage() {
-  return <h1>Hello, world!</h1>;
+  return (
+    <main className="flex grow items-center justify-center">
+      <h1>Hello, world!</h1>
+    </main>
+  );
 }

@@ -15,13 +15,43 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "preset": "recommended"
+      "preset": "recommended",
+      // Every rule in the `tailwind` domain is nursery, so the domain
+      // activates nothing on its own — they must be opted into by name.
+      // The domain owns `noTailwindArbitraryValue` (and, from Biome 2.6,
+      // `useTailwindShorthandClasses`); `useSortedClasses` is not part of it.
+      "nursery": {
+        // `fix: "safe"` so `pnpm lint` and format-on-save apply the sort,
+        // instead of only `lint:ci` failing on it.
+        // `functions` covers class strings built outside a `className`
+        // attribute (a `cva()` at module scope); strings passed inline to
+        // `className={...}` are already sorted without listing anything.
+        "useSortedClasses": {
+          "level": "error",
+          "fix": "safe",
+          "options": {
+            "functions": ["clsx", "cva", "cn", "twMerge", "tw"]
+          }
+        },
+        "noTailwindArbitraryValue": {
+          "level": "error",
+          "options": {
+            "functions": ["clsx", "cva", "cn", "twMerge", "tw"]
+          }
+        }
+      }
     },
     "domains": {
       "project": "recommended",
       "react": "recommended",
       "next": "recommended",
+      "tailwind": "recommended",
       "types": "recommended"
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
     }
   },
   "javascript": {

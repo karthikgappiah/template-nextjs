@@ -34,14 +34,17 @@ pnpm biome check --write <paths>   # scope a check to specific paths
 
 ## Quality gates
 
-The same checks at four layers, so passing `pnpm lint` and `pnpm typecheck` locally should pass
-everywhere:
+The same checks at four layers, so passing `pnpm lint`, `pnpm typecheck`, and `pnpm build`
+locally should pass everywhere:
 
 - **on save** (`.vscode/settings.json`) — Biome format, safe fixes, organize imports.
 - **pre-commit** (`lefthook.jsonc`) — `biome check --write` over staged files matching its `glob`,
   `stage_fixed: true` re-stages autofixes. Skipped during merge and rebase.
-- **pre-push** — `pnpm lint:ci` and `pnpm typecheck`, in parallel.
-- **CI** (`.github/workflows/code-quality.yml`) — the same two on every push and pull request.
+- **pre-push** — `pnpm lint:ci` in parallel with a `next` group running `pnpm typecheck` then
+  `pnpm build`. Those two share `.next/`, so they are grouped sequentially rather than raced.
+- **CI** (`.github/workflows/code-quality.yml`) — the same three on every push and pull request.
+  `pnpm build` is the only gate that resolves Tailwind: Biome parses CSS but does not know which
+  utilities exist, so an unknown utility in a stylesheet passes `lint:ci` and fails here.
 
 Adding a gate means adding it in all the places it belongs, not just one.
 
