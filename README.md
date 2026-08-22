@@ -2,32 +2,36 @@
 
 [![Code Quality Assurance](https://github.com/karthikgappiah/template-nextjs/actions/workflows/code-quality.yml/badge.svg)](https://github.com/karthikgappiah/template-nextjs/actions/workflows/code-quality.yml)
 
-A GitHub template repository for Next.js projects, with one formatter, one linter, and one import
-organizer — [Biome](https://biomejs.dev) — wired so the identical checks run in your editor, on
-commit, on push, and in CI. No Prettier/ESLint pairing, no config drift, no "works on my machine"
-formatting diffs.
+A GitHub template repository for Next.js projects: the App Router in TypeScript, with one
+formatter, one linter, and one import organizer — [Biome](https://biomejs.dev) — wired so the
+identical checks run in your editor, on commit, on push, and in CI. No Prettier/ESLint pairing, no
+config drift, no "works on my machine" formatting diffs.
 
-This is a starting point, not an application: there is no source tree, build step, or test suite
-yet. Generate a repo from it, then add your Next.js app.
+It boots to a "Hello, world!" page and nothing else. Generate a repo from it, then build your app
+in `src/app/`.
 
 ## What you get
 
 | File | Purpose |
 | --- | --- |
-| `biome.jsonc` | Formatter, linter (`recommended` rules), and import-organizing assist. Honors `.gitignore`; unknown file types error rather than pass silently. |
-| `lefthook.jsonc` | Git hooks: `pre-commit` fixes staged files, `pre-push` runs the full check. |
-| `.github/workflows/code-quality.yml` | Runs the full check on every push and pull request. |
-| `.vscode/` | Biome as format-on-save formatter; Prettier and ESLint marked unwanted. |
-| `package.json` | The two scripts below, plus the pnpm version CI installs. |
+| `src/app/` | App Router tree. `(pages)/` is a route group holding the root layout and pages. |
+| `next.config.ts` | Empty, typed Next.js config — the place for your options. |
+| `tsconfig.json` | `strict`, bundler resolution, and the `@/*` alias (see below). |
+| `biome.jsonc` | Formatter, linter (`recommended` rules plus the React/Next/project/type domains), and import-organizing assist. Honors `.gitignore`; unknown file types error rather than pass silently. |
+| `lefthook.jsonc` | Git hooks: `pre-commit` fixes staged files, `pre-push` lints and typechecks. |
+| `.github/workflows/code-quality.yml` | Lints and typechecks on every push and pull request. |
+| `.vscode/` | Biome as format-on-save formatter, Prettier and ESLint marked unwanted, and readable tab labels for App Router files. |
+| `package.json` | The scripts below, plus the pnpm version CI installs. |
 | `AGENTS.md` | The same conventions, written for coding agents (`CLAUDE.md` symlinks to it). |
 
 ## Quick start
 
 1. Click **Use this template** on GitHub (or `gh repo create <name> --template karthikgappiah/template-nextjs`).
-2. Clone it and install:
+2. Clone it, install, and run it:
 
    ```sh
    pnpm install    # installs dependencies and the Git hooks
+   pnpm dev        # http://localhost:3000
    ```
 
 3. Make it yours: find and replace every `karthikgappiah/template-nextjs` with your own
@@ -45,39 +49,57 @@ prompts you.
 ## Daily use
 
 ```sh
+pnpm dev                           # dev server with hot reload
+pnpm build                         # production build
+pnpm start                         # serve the build output
 pnpm lint                          # format, lint, and organize imports — writes fixes
 pnpm lint:ci                       # check only; exits non-zero on any diagnostic
+pnpm typecheck                     # generate route types, then tsc --noEmit
 pnpm biome check --write src/      # scope a run to specific paths
 ```
 
-In practice you rarely run these by hand: saving a file fixes it, and committing fixes whatever you
-forgot.
+In practice you rarely run the checks by hand: saving a file fixes it, and committing fixes
+whatever you forgot.
+
+## Writing pages
+
+Routes live in `src/app/`. The `(pages)` directory is a route group — parentheses mean it shapes
+the file tree without adding a URL segment — so `src/app/(pages)/page.tsx` serves `/` and
+`src/app/(pages)/about/page.tsx` serves `/about`. The root `layout.tsx` lives in the group with
+them.
+
+One thing to know before your first import: **`@/*` maps to the repo root, not `src/`.** A helper at
+`src/lib/format.ts` imports as `@/src/lib/format`. If you'd rather write `@/lib/format`, change
+`paths` in `tsconfig.json` to `{ "@/*": ["./src/*"] }`.
 
 ## Quality gates
 
-The same Biome check runs at four points, so passing locally means passing everywhere.
+The same checks run at four points, so passing locally means passing everywhere.
 
 | When | What runs | Notes |
 | --- | --- | --- |
 | On save | Format + safe fixes + organize imports | Via `.vscode/settings.json` |
 | `git commit` | `biome check --write` on staged files | Fixes are re-staged into the commit. Skipped during merge and rebase. |
-| `git push` | `pnpm lint:ci` on the whole repo | |
-| Push / PR | `pnpm lint:ci` on the whole repo | GitHub Actions |
+| `git push` | `pnpm lint:ci` and `pnpm typecheck` | Whole repo, in parallel |
+| Push / PR | `pnpm lint:ci` and `pnpm typecheck` | GitHub Actions |
 
 Need to bypass a hook once — a WIP commit, say? `LEFTHOOK=0 git commit …`. CI still has the final
 word.
 
 ## Adapting it
 
-- **Adding source code.** Drop it in; Biome picks it up. If you add a build or test step, add the
-  script and a matching CI step so the gates stay honest.
+- **Adding tests.** There's no test runner yet. Add the script, a `pre-push` job in
+  `lefthook.jsonc`, and a CI step — all three, so the gates stay honest.
 - **Adding a new file type.** Biome's `files.ignoreUnknown` is `false` on purpose: an unrecognized
   file is an error, not a silent skip. Either let Biome handle the type or add it to `.gitignore` —
   and extend the `glob` in `lefthook.jsonc` so the pre-commit hook sees it too.
 - **Upgrading Biome.** Bump `@biomejs/biome` and update the `$schema` URL in `biome.jsonc` to the
   same version in the same commit; they are expected to match.
 - **Changing style rules.** `biome.jsonc` is the single source of truth — space indentation, double
-  quotes, ESM. Edit there and every gate follows.
+  quotes, ESM, and the `recommended` rules with the React, Next.js, project, and type domains
+  enabled. Edit there and every gate follows.
+- **Loosening TypeScript.** `strict` is on deliberately. Prefer fixing the type over editing
+  `tsconfig.json`.
 
 ## Contributing
 
