@@ -1,5 +1,5 @@
 {
-  "name": "template-biomejs",
+  "name": "template-nextjs",
   "version": "0.0.0",
   "scripts": {
     "lint": "biome check --write",

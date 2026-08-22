@@ -1,14 +1,14 @@
-# Biome.js — Code Quality Assurance
+# Next.js Template
 
-[![Code Quality Assurance](https://github.com/karthikgappiah/template-biomejs/actions/workflows/code-quality.yml/badge.svg)](https://github.com/karthikgappiah/template-biomejs/actions/workflows/code-quality.yml)
+[![Code Quality Assurance](https://github.com/karthikgappiah/template-nextjs/actions/workflows/code-quality.yml/badge.svg)](https://github.com/karthikgappiah/template-nextjs/actions/workflows/code-quality.yml)
 
-A GitHub template repository that gives a new project one formatter, one linter, and one import
+A GitHub template repository for Next.js projects, with one formatter, one linter, and one import
 organizer — [Biome](https://biomejs.dev) — wired so the identical checks run in your editor, on
 commit, on push, and in CI. No Prettier/ESLint pairing, no config drift, no "works on my machine"
 formatting diffs.
 
-This is a starting point, not an application: there is no source tree, build step, or test suite.
-Generate a repo from it, then add yours.
+This is a starting point, not an application: there is no source tree, build step, or test suite
+yet. Generate a repo from it, then add your Next.js app.
 
 ## What you get
 
@@ -23,14 +23,14 @@ Generate a repo from it, then add yours.
 
 ## Quick start
 
-1. Click **Use this template** on GitHub (or `gh repo create <name> --template karthikgappiah/template-biomejs`).
+1. Click **Use this template** on GitHub (or `gh repo create <name> --template karthikgappiah/template-nextjs`).
 2. Clone it and install:
 
    ```sh
    pnpm install    # installs dependencies and the Git hooks
    ```
 
-3. Make it yours: find and replace every `karthikgappiah/template-biomejs` with your own
+3. Make it yours: find and replace every `karthikgappiah/template-nextjs` with your own
    `owner/repo` — the CI badge above and the `gh repo create` line in step 1 both point back here
    until you do. Then set `name` and `license` in `package.json`, and rewrite this README's title
    and intro to describe your project.
